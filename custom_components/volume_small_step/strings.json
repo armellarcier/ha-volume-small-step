@@ -9,5 +9,27 @@
     "abort": {
       "already_configured": "Volume Small Step is already configured."
     }
+  },
+  "services": {
+    "volume_up_small": {
+      "name": "Volume up (small step)",
+      "description": "Increases the volume by a small step (default 0.02, i.e. 2 points).",
+      "fields": {
+        "step": {
+          "name": "Step",
+          "description": "Volume increment (between 0.01 and 0.5). Default: 0.02."
+        }
+      }
+    },
+    "volume_down_small": {
+      "name": "Volume down (small step)",
+      "description": "Decreases the volume by a small step (default 0.02, i.e. 2 points).",
+      "fields": {
+        "step": {
+          "name": "Step",
+          "description": "Volume decrement (between 0.01 and 0.5). Default: 0.02."
+        }
+      }
+    }
   }
 }
