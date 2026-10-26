@@ -8,9 +8,9 @@
   "dependencies": [
     "media_player"
   ],
-  "documentation": "https://github.com/armellarcier/hacs_volume_small_step",
+  "documentation": "https://github.com/armellarcier/ha-volume-small-step",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/armellarcier/hacs_volume_small_step/issues",
+  "issue_tracker": "https://github.com/armellarcier/ha-volume-small-step/issues",
   "requirements": [],
-  "version": "1.0.1"
+  "version": "1.0.2"
 }
