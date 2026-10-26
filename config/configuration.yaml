@@ -1,0 +1,11 @@
+# Dev configuration for testing volume_small_step.
+default_config:
+
+# Loads the demo integration: provides several media_player entities with
+# volume_level (e.g. media_player.living_room, media_player.bedroom, media_player.walkman).
+demo:
+
+logger:
+  default: info
+  logs:
+    custom_components.volume_small_step: debug

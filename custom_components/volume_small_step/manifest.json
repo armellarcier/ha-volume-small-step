@@ -1,12 +1,16 @@
 {
   "domain": "volume_small_step",
   "name": "Volume Small Step",
-  "version": "1.0.0",
-  "description": "Adds volume_up_small and volume_down_small actions to the media_player domain for fine-grained volume control.",
-  "documentation": "https://github.com/armellarcier/hacs_volume_small_step",
-  "dependencies": ["media_player"],
-  "codeowners": ["@armellarcier"],
-  "requirements": [],
+  "codeowners": [
+    "@armellarcier"
+  ],
   "config_flow": true,
-  "iot_class": "local_push"
+  "dependencies": [
+    "media_player"
+  ],
+  "documentation": "https://github.com/armellarcier/hacs_volume_small_step",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/armellarcier/hacs_volume_small_step/issues",
+  "requirements": [],
+  "version": "1.0.0"
 }

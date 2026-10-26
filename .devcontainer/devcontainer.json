@@ -1,0 +1,14 @@
+{
+  "name": "volume_small_step",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
+  "postCreateCommand": "pip install -r requirements_test.txt",
+  "forwardPorts": [8123],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "charliermarsh.ruff", "redhat.vscode-yaml"],
+      "settings": {
+        "python.testing.pytestEnabled": true
+      }
+    }
+  }
+}

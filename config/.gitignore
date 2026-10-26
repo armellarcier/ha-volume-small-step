@@ -1,0 +1,4 @@
+# Everything Home Assistant generates at runtime
+*
+!.gitignore
+!configuration.yaml

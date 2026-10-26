@@ -1,0 +1,25 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: ha-volume-small-step
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./config:/config
+      - ./custom_components/volume_small_step:/config/custom_components/volume_small_step:ro
+    environment:
+      - TZ=Europe/Paris
+    restart: unless-stopped
+
+  tests:
+    image: python:3.14
+    profiles: ["test"]
+    working_dir: /app
+    volumes:
+      - .:/app
+      - pip-cache:/root/.cache/pip
+    command: >
+      sh -c "pip install -q -r requirements_test.txt && pytest"
+
+volumes:
+  pip-cache:

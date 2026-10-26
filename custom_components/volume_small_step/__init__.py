@@ -11,8 +11,8 @@ No configuration.yaml entry required: the integration is set up via the UI.
 
 from __future__ import annotations
 
+import inspect
 import logging
-from typing import Any
 
 import voluptuous as vol
 
@@ -21,11 +21,13 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import config_validation as cv
-import homeassistant.helpers.entity_registry as er
+from homeassistant.helpers.service import async_extract_entity_ids
 
 _LOGGER = logging.getLogger(__name__)
 
 DOMAIN = "volume_small_step"
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 ATTR_STEP = "step"
 DEFAULT_STEP = 0.02
@@ -37,13 +39,16 @@ SERVICE_VOLUME_DOWN_SMALL = "volume_down_small"
 
 SERVICE_SCHEMA = vol.Schema(
     {
-        vol.Optional(ATTR_ENTITY_ID): cv.entity_ids,
+        **cv.TARGET_SERVICE_FIELDS,
         vol.Optional(ATTR_STEP, default=DEFAULT_STEP): vol.All(
             vol.Coerce(float),
             vol.Range(min=MIN_STEP, max=MAX_STEP),
         ),
     }
 )
+
+# HA 2025+ dropped the `hass` argument of async_extract_entity_ids
+_EXTRACT_NEEDS_HASS = "hass" in inspect.signature(async_extract_entity_ids).parameters
 
 
 def _register_services(hass: HomeAssistant) -> None:
@@ -61,14 +66,12 @@ def _register_services(hass: HomeAssistant) -> None:
             direction: +1 for up, -1 for down.
         """
         step: float = call.data.get(ATTR_STEP, DEFAULT_STEP)
-        entity_ids: list[str] | None = call.data.get(ATTR_ENTITY_ID)
 
-        # Resolve entity IDs from the service call target as well (HA 2022+)
-        if not entity_ids:
-            entity_ids = []
-
-        # Also pull from the newer `target` mechanism
-        target_entities: list[str] = list(call.data.get("entity_id", entity_ids) or [])
+        # Resolves entity, device and area targets (and expands groups)
+        if _EXTRACT_NEEDS_HASS:
+            target_entities = await async_extract_entity_ids(hass, call)
+        else:
+            target_entities = await async_extract_entity_ids(call)
 
         if not target_entities:
             _LOGGER.warning(
@@ -77,9 +80,7 @@ def _register_services(hass: HomeAssistant) -> None:
             )
             return
 
-        entity_reg = er.async_get(hass)
-
-        for entity_id in target_entities:
+        for entity_id in sorted(target_entities):
             state = hass.states.get(entity_id)
             if state is None:
                 _LOGGER.warning("Entity %s not found, skipping.", entity_id)

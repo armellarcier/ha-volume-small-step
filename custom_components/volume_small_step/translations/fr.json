@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Volume Small Step",
+        "description": "Ajoute les actions `volume_up_small` et `volume_down_small` pour toutes les entités media_player. Aucune configuration nécessaire."
+      }
+    },
+    "abort": {
+      "already_configured": "Volume Small Step est déjà configuré."
+    }
+  }
+}
